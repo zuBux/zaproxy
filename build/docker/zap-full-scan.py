@@ -41,7 +41,7 @@
 # to be handled differently.
 # You can also add your own messages for the rules by appending them after a tab
 # at the end of each line.
-# By default all of the active scan rules run but you can prevent rules from 
+# By default all of the active scan rules run but you can prevent rules from
 # running by supplying a configuration file with the rules set to IGNORE.
 
 import getopt
@@ -85,6 +85,7 @@ def usage():
     print('    -r report_html    file to write the full ZAP HTML report')
     print('    -w report_md      file to write the full ZAP Wiki(Markdown) report')
     print('    -x report_xml     file to write the full ZAP XML report')
+    print('    -o report_json    file to write the full ZAP JSON report')
     print('    -a                include the alpha passive scan rules as well')
     print('    -d                show debug messages')
     print('    -P                specify listen port')
@@ -116,6 +117,7 @@ def main(argv):
     report_html = ''
     report_md = ''
     report_xml = ''
+    report_json = ''
     target = ''
     zap_alpha = False
     info_unspecified = False
@@ -134,7 +136,7 @@ def main(argv):
     fail_inprog_count = 0
 
     try:
-        opts, args = getopt.getopt(argv, "t:c:u:g:m:n:r:w:x:l:daijp:sz:P:D:")
+        opts, args = getopt.getopt(argv, "t:c:u:g:m:n:r:w:x:o:l:daijp:sz:P:D:")
     except getopt.GetoptError as exc:
         logging.warning('Invalid option ' + exc.opt + ' : ' + exc.msg)
         usage()
@@ -428,6 +430,10 @@ def main(argv):
                 # Save the report
                 with open(base_dir + report_xml, 'w') as f:
                     f.write(zap.core.xmlreport())
+                    
+            if report_json:
+                with open(base_dir + report_json, 'w') as f:
+                    json.dump(zap.core.alerts(baseurl=target), f)
 
             print('FAIL-NEW: ' + str(fail_count) + '\tFAIL-INPROG: ' + str(fail_inprog_count) +
                 '\tWARN-NEW: ' + str(warn_count) + '\tWARN-INPROG: ' + str(warn_inprog_count) +
