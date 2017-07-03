@@ -168,6 +168,8 @@ def main(argv):
             report_html = arg
         elif opt == '-w':
             report_md = arg
+        elif opt == '-o':
+            report_json = arg
         elif opt == '-x':
             report_xml = arg
         elif opt == '-a':
@@ -430,7 +432,7 @@ def main(argv):
                 # Save the report
                 with open(base_dir + report_xml, 'w') as f:
                     f.write(zap.core.xmlreport())
-                    
+
             if report_json:
                 with open(base_dir + report_json, 'w') as f:
                     json.dump(zap.core.alerts(baseurl=target), f)
