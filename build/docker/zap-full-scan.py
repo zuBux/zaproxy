@@ -435,7 +435,7 @@ def main(argv):
 
             if report_json:
                 with open(base_dir + report_json, 'w') as f:
-                    json.dump(zap.core.alerts(baseurl=target), f)
+                    json.dump(zap.core.alerts(baseurl=res.url), f)
 
             print('FAIL-NEW: ' + str(fail_count) + '\tFAIL-INPROG: ' + str(fail_inprog_count) +
                 '\tWARN-NEW: ' + str(warn_count) + '\tWARN-INPROG: ' + str(warn_inprog_count) +
